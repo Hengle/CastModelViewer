@@ -1246,7 +1246,6 @@ namespace SELib
             var hash = readFile.ReadUInt64();
             var propertiesCount = readFile.ReadInt32();
             var childrenCount = readFile.ReadInt32();
-            var MaterialIndex = 0;
 
             for (int i = 0; i < childrenCount; i++)
             {
