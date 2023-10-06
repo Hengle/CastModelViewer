@@ -1027,7 +1027,6 @@ namespace SELib
             return Read(File.OpenRead(FileName));
         }
 
-
         ///CAST
         private static readonly Dictionary<string, ushort> PropertySize = new Dictionary<string, ushort>
         {
@@ -1258,6 +1257,18 @@ namespace SELib
                     case "t":
                         var type = readFile.ReadNullTermString();
                         break;
+
+                    //Legion+ has extra material hashes that we cant use in Helix
+                    case "diffuse":
+                    case "extra":
+                    case "emissive":
+                    case "gloss":
+                    case "roughness":
+                    case "ao":
+                    case "cavity":
+                        readFile.ReadUInt64();
+                        break;
+
                 }
             }
 
@@ -1274,6 +1285,7 @@ namespace SELib
                 var propElements = readFile.ReadUInt32();
                 var name = Encoding.UTF8.GetString(readFile.ReadBytes(nameLength));
                 var propType = Encoding.UTF8.GetString(BitConverter.GetBytes(id));
+                string temp = "";
 
                 if (Hash == diffuseHash)
                     diffuseName = readFile.ReadNullTermString();
@@ -1281,6 +1293,9 @@ namespace SELib
                     normalName = readFile.ReadNullTermString();
                 else if (Hash == specularHash)
                     specularName = readFile.ReadNullTermString();
+                //for legion+ (and future?) materials we want to have the fallthrough
+                else
+                    temp = readFile.ReadNullTermString();
             }
 
             var matData = new SEModelSimpleMaterial()
