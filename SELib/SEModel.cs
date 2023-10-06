@@ -989,7 +989,7 @@ namespace SELib
             { "4v" , 16 },
         };
 
-        private static void ReadModelMesh(ExtendedBinaryReader readFile, int propertiesCount, int MaterialIndex, SEModel model)
+        private static void ReadModelMesh(ExtendedBinaryReader readFile, int propertiesCount, SEModel model)
         {
             var mesh = new SEModelMesh();
             List<int> weightIndex = new List<int>();
@@ -1050,7 +1050,8 @@ namespace SELib
                         }
                         break;
                     case "m":
-                        readFile.ReadInt64();
+                        var h = readFile.ReadUInt64();
+                        mesh.AddMaterialIndex(MaterialList.IndexOf(h));
                         break;
                     case "wv":
                         for (int i = 0; i < propElements; i++)
@@ -1112,13 +1113,14 @@ namespace SELib
                         break;
                     case "ul":
                         readFile.ReadByte();
-                        mesh.AddMaterialIndex(MaterialIndex);
                         break;
                 }
             }
 
             model.Meshes.Add(mesh);
         }
+
+        private static List<ulong> MaterialList = new List<ulong>();
 
         private static void ReadModelMaterial(ExtendedBinaryReader readFile, int propertiesCount, int childCount, SEModel model)
         {
@@ -1131,7 +1133,6 @@ namespace SELib
             var diffuseName = "";
             var normalName = "";
             var specularName = "";
-
 
             for (int i = 0; i < propertiesCount; i++)
             {
@@ -1242,7 +1243,7 @@ namespace SELib
         {
             var nodeId = readFile.ReadInt32();
             var nodeSize = readFile.ReadInt32();
-            readFile.ReadUInt64();
+            var hash = readFile.ReadUInt64();
             var propertiesCount = readFile.ReadInt32();
             var childrenCount = readFile.ReadInt32();
             var MaterialIndex = 0;
@@ -1251,7 +1252,7 @@ namespace SELib
             {
                 var childNodeId = readFile.ReadInt32();
                 var childNodeSize = readFile.ReadInt32();
-                readFile.ReadUInt64();
+                var childHash = readFile.ReadUInt64();
                 var childPropertiesCount = readFile.ReadInt32();
                 var childChildrenCount = readFile.ReadInt32();
 
@@ -1262,12 +1263,13 @@ namespace SELib
                         ReadModelSkeleton(readFile, childChildrenCount, model); break;
 
                     case 0x6873656D:
-                        ReadModelMesh(readFile, childPropertiesCount, MaterialIndex, model);
-                        MaterialIndex++;
+                        ReadModelMesh(readFile, childPropertiesCount, model);
                         break;
 
                     case 0x6C74616D:
-                        ReadModelMaterial(readFile, childPropertiesCount, childChildrenCount, model); break;
+                        ReadModelMaterial(readFile, childPropertiesCount, childChildrenCount, model);
+                        MaterialList.Add(childHash); 
+                        break;
                 }
             }
         }
@@ -1308,6 +1310,7 @@ namespace SELib
         {
             // Create a new model
             var model = new SEModel();
+            MaterialList = new List<ulong>();
             // Setup a new reader
             using (ExtendedBinaryReader readFile = new ExtendedBinaryReader(Stream))
             {
