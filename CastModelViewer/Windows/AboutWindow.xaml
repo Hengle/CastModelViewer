@@ -1,0 +1,21 @@
+﻿<!--
+    // SEModelViewer - Tool to view SEModel Files
+    // Copyright (C) 2018 Philip/Scobalula
+-->
+<Window x:Class="CastModelViewer.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="About CastModelViewer" Height="325.833" Width="365.333" WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize" WindowStyle="ToolWindow">
+    <Grid Background="#FF1E2127">
+        <Label Content="CastModelViewer - Shows some Model stuffs" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,162,10,0" VerticalAlignment="Top" Height="27" Width="339" Background="{x:Null}" Foreground="White"/>
+        <Label Content="Developed by echo000 - Cast + SELib by DTZxPorter"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Margin="10,189,10,0" VerticalAlignment="Top" Height="27" Background="{x:Null}" Foreground="White"/>
+        <Label Content="Based on SEModelViewer by Scobalula"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Margin="10,216,10,0" VerticalAlignment="Top" Height="27" Background="{x:Null}" Foreground="White"/>
+        <Label Content="Version: v0.1.0-Alpha"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Margin="13,241,7,0" VerticalAlignment="Top" Height="27" Background="{x:Null}" Foreground="White"/>
+        <Button Style="{StaticResource NormalButton}" x:Name="DonateButton" Click="DonateButton_Click" Content="Donate" HorizontalAlignment="Left" Margin="10,0,0,10" Width="90" Height="27" VerticalAlignment="Bottom"/>
+        <Image Height="152" VerticalAlignment="Top" Source="/SEModelViewer;component/Icons/main_icon.png" Margin="100,10,100,0"/>
+    </Grid>
+</Window>
