@@ -27,10 +27,12 @@ namespace SELib
         /// The model will be saved with local bone matricies
         /// </summary>
         SupportsLocals,
+
         /// <summary>
         /// The model will be saved with global bone matricies
         /// </summary>
         SupportsGlobals,
+
         /// <summary>
         /// The model will be saved with both global and local matricies
         /// </summary>
@@ -44,8 +46,10 @@ namespace SELib
     {
         // Whether or not this model contains a bone block
         SEMODEL_PRESENCE_BONE = 1 << 0,
+
         // Whether or not this model contains submesh blocks
         SEMODEL_PRESENCE_MESH = 1 << 1,
+
         // Whether or not this model contains inline material blocks
         SEMODEL_PRESENCE_MATERIALS = 1 << 2,
 
@@ -60,6 +64,7 @@ namespace SELib
     {
         // Whether or not bones contain global-space matricies
         SEMODEL_PRESENCE_GLOBAL_MATRIX = 1 << 0,
+
         // Whether or not bones contain local-space matricies
         SEMODEL_PRESENCE_LOCAL_MATRIX = 1 << 1,
 
@@ -103,6 +108,7 @@ namespace SELib
         /// Get or set the name of this bone
         /// </summary>
         public string BoneName { get; set; }
+
         /// <summary>
         /// Get or set the parent index of this bone, -1 for a root bone
         /// </summary>
@@ -112,6 +118,7 @@ namespace SELib
         /// Get or set the global position of this bone
         /// </summary>
         public Vector3 GlobalPosition { get; set; }
+
         /// <summary>
         /// Get or set the global rotation of this bone
         /// </summary>
@@ -121,6 +128,7 @@ namespace SELib
         /// Get or set the local position of this bone
         /// </summary>
         public Vector3 LocalPosition { get; set; }
+
         /// <summary>
         /// Get or set the local rotation of this bone
         /// </summary>
@@ -165,10 +173,12 @@ namespace SELib
         /// A list of verticies in the mesh
         /// </summary>
         public List<SEModelVertex> Verticies { get; set; }
+
         /// <summary>
         /// A list of faces in the mesh, faces match D3DPT_TRIANGLELIST (DirectX) and VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST (Vulkan)
         /// </summary>
         public List<SEModelFace> Faces { get; set; }
+
         /// <summary>
         /// A list of material indicies per each UVLayer, -1 indicates no material assigned...
         /// </summary>
@@ -258,6 +268,7 @@ namespace SELib
         /// The vertex normal
         /// </summary>
         public Vector3 VertexNormal { get; set; }
+
         /// <summary>
         /// The vertex coloring
         /// </summary>
@@ -287,6 +298,7 @@ namespace SELib
         /// The bone index for this weight
         /// </summary>
         public uint BoneIndex { get; set; }
+
         /// <summary>
         /// The weight value, from 0.0 to 1.0 for this weight
         /// </summary>
@@ -295,7 +307,11 @@ namespace SELib
         /// <summary>
         /// Creates a new SEModelWeight with default settings
         /// </summary>
-        public SEModelWeight() { BoneIndex = 0; BoneWeight = 1.0f; }
+        public SEModelWeight()
+        {
+            BoneIndex = 0;
+            BoneWeight = 1.0f;
+        }
     }
 
     public class SEModelUVSet
@@ -304,6 +320,7 @@ namespace SELib
         /// The UV coords for this UVSet
         /// </summary>
         public Vector2 UVCoord { get; set; }
+
         /// <summary>
         /// The material index of the UV, the index is within the models materials
         /// </summary>
@@ -312,7 +329,11 @@ namespace SELib
         /// <summary>
         /// Creates a new SEModelUVSet with default settings
         /// </summary>
-        public SEModelUVSet() { UVCoord = new Vector2(); MaterialIndex = 0; }
+        public SEModelUVSet()
+        {
+            UVCoord = new Vector2();
+            MaterialIndex = 0;
+        }
     }
 
     #endregion
@@ -325,6 +346,7 @@ namespace SELib
         /// The name of the material
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
         /// The material data, determined by type
         /// </summary>
@@ -351,10 +373,12 @@ namespace SELib
         /// A list of bones, in order by index
         /// </summary>
         public List<SEModelBone> Bones { get; private set; }
+
         /// <summary>
         /// A list of meshes, in order
         /// </summary>
         public List<SEModelMesh> Meshes { get; private set; }
+
         /// <summary>
         /// A list of materials, in order
         /// </summary>
@@ -895,11 +919,29 @@ namespace SELib
                             for (int l = 0; l < MaxSkinInfluenceCount; l++)
                             {
                                 if (BoneCount <= 0xFF)
-                                    mesh.Verticies[v].Weights.Add(new SEModelWeight() { BoneIndex = readFile.ReadByte(), BoneWeight = readFile.ReadSingle() });
+                                    mesh.Verticies[v].Weights.Add(
+                                        new SEModelWeight()
+                                        {
+                                            BoneIndex = readFile.ReadByte(),
+                                            BoneWeight = readFile.ReadSingle()
+                                        }
+                                    );
                                 else if (BoneCount <= 0xFFFF)
-                                    mesh.Verticies[v].Weights.Add(new SEModelWeight() { BoneIndex = readFile.ReadUInt16(), BoneWeight = readFile.ReadSingle() });
+                                    mesh.Verticies[v].Weights.Add(
+                                        new SEModelWeight()
+                                        {
+                                            BoneIndex = readFile.ReadUInt16(),
+                                            BoneWeight = readFile.ReadSingle()
+                                        }
+                                    );
                                 else
-                                    mesh.Verticies[v].Weights.Add(new SEModelWeight() { BoneIndex = readFile.ReadUInt32(), BoneWeight = readFile.ReadSingle() });
+                                    mesh.Verticies[v].Weights.Add(
+                                        new SEModelWeight()
+                                        {
+                                            BoneIndex = readFile.ReadUInt32(),
+                                            BoneWeight = readFile.ReadSingle()
+                                        }
+                                    );
                             }
                         }
                     }
@@ -908,11 +950,23 @@ namespace SELib
                     for (int f = 0; f < FaceCount; f++)
                     {
                         if (VertexCount <= 0xFF)
-                            mesh.AddFace(readFile.ReadByte(), readFile.ReadByte(), readFile.ReadByte());
+                            mesh.AddFace(
+                                readFile.ReadByte(),
+                                readFile.ReadByte(),
+                                readFile.ReadByte()
+                            );
                         else if (VertexCount <= 0xFFFF)
-                            mesh.AddFace(readFile.ReadUInt16(), readFile.ReadUInt16(), readFile.ReadUInt16());
+                            mesh.AddFace(
+                                readFile.ReadUInt16(),
+                                readFile.ReadUInt16(),
+                                readFile.ReadUInt16()
+                            );
                         else
-                            mesh.AddFace(readFile.ReadUInt32(), readFile.ReadUInt32(), readFile.ReadUInt32());
+                            mesh.AddFace(
+                                readFile.ReadUInt32(),
+                                readFile.ReadUInt32(),
+                                readFile.ReadUInt32()
+                            );
                     }
 
                     // Read material reference indicies
@@ -992,8 +1046,6 @@ namespace SELib
         private static void ReadModelMesh(ExtendedBinaryReader readFile, int propertiesCount, SEModel model)
         {
             var mesh = new SEModelMesh();
-            List<int> weightIndex = new List<int>();
-            List<float> weightValues = new List<float>();
             for (int c = 0; c < propertiesCount; c++)
             {
                 var ID = readFile.ReadUInt16();
@@ -1010,12 +1062,20 @@ namespace SELib
                             if (mesh.VertexCount <= i)
                             {
                                 var vert = new SEModelVertex();
-                                vert.Position = new Vector3(readFile.ReadSingle(), readFile.ReadSingle(), readFile.ReadSingle());
+                                vert.Position = new Vector3(
+                                    readFile.ReadSingle(),
+                                    readFile.ReadSingle(),
+                                    readFile.ReadSingle()
+                                );
                                 mesh.AddVertex(vert);
                             }
                             else
                             {
-                                mesh.Verticies[i].Position = new Vector3(readFile.ReadSingle(), readFile.ReadSingle(), readFile.ReadSingle());
+                                mesh.Verticies[i].Position = new Vector3(
+                                    readFile.ReadSingle(),
+                                    readFile.ReadSingle(),
+                                    readFile.ReadSingle()
+                                );
                             }
                         }
                         break;
@@ -1025,12 +1085,20 @@ namespace SELib
                             if (mesh.VertexCount <= i)
                             {
                                 var vert = new SEModelVertex();
-                                vert.VertexNormal = new Vector3(readFile.ReadSingle(), readFile.ReadSingle(), readFile.ReadSingle());
+                                vert.VertexNormal = new Vector3(
+                                    readFile.ReadSingle(),
+                                    readFile.ReadSingle(),
+                                    readFile.ReadSingle()
+                                );
                                 mesh.AddVertex(vert);
                             }
                             else
                             {
-                                mesh.Verticies[i].VertexNormal = new Vector3(readFile.ReadSingle(), readFile.ReadSingle(), readFile.ReadSingle());
+                                mesh.Verticies[i].VertexNormal = new Vector3(
+                                    readFile.ReadSingle(),
+                                    readFile.ReadSingle(),
+                                    readFile.ReadSingle()
+                                );
                             }
                         }
                         break;
@@ -1040,12 +1108,22 @@ namespace SELib
                             if (mesh.VertexCount <= i)
                             {
                                 var vert = new SEModelVertex();
-                                vert.VertexColor = new Color(readFile.ReadByte(), readFile.ReadByte(), readFile.ReadByte(), readFile.ReadByte());
+                                vert.VertexColor = new Color(
+                                    readFile.ReadByte(),
+                                    readFile.ReadByte(),
+                                    readFile.ReadByte(),
+                                    readFile.ReadByte()
+                                );
                                 mesh.AddVertex(vert);
                             }
                             else
                             {
-                                mesh.Verticies[i].VertexColor = new Color(readFile.ReadByte(), readFile.ReadByte(), readFile.ReadByte(), readFile.ReadByte());
+                                mesh.Verticies[i].VertexColor = new Color(
+                                    readFile.ReadByte(),
+                                    readFile.ReadByte(),
+                                    readFile.ReadByte(),
+                                    readFile.ReadByte()
+                                );
                             }
                         }
                         break;
@@ -1054,24 +1132,27 @@ namespace SELib
                         mesh.AddMaterialIndex(MaterialList.IndexOf(h));
                         break;
                     case "wv":
+                        //not really needed, read anyway
                         for (int i = 0; i < propElements; i++)
                         {
-                            weightValues.Add(readFile.ReadSingle());
+                            var weight = readFile.ReadSingle();
                         }
                         break;
                     case "wb":
+                        //not really needed, need to read anway
                         for (int i = 0; i < propElements; i++)
                         {
+                            var weightIndex = 0;
                             switch (PropertySize[PropertyType])
                             {
                                 case 1:
-                                    weightIndex.Add(readFile.ReadByte());
+                                    weightIndex = readFile.ReadByte();
                                     break;
                                 case 2:
-                                    weightIndex.Add(readFile.ReadInt16());
+                                    weightIndex = readFile.ReadInt16();
                                     break;
                                 case 4:
-                                    weightIndex.Add(readFile.ReadInt32());
+                                    weightIndex = readFile.ReadInt32();
                                     break;
                             }
                         }
@@ -1081,15 +1162,27 @@ namespace SELib
                         {
                             if (PropertySize[PropertyType] == 4)
                             {
-                                mesh.AddFace((uint)readFile.ReadInt32(), (uint)readFile.ReadInt32(), (uint)readFile.ReadInt32());
+                                mesh.AddFace(
+                                    (uint)readFile.ReadInt32(),
+                                    (uint)readFile.ReadInt32(),
+                                    (uint)readFile.ReadInt32()
+                                );
                             }
                             else if (PropertySize[PropertyType] == 2)
                             {
-                                mesh.AddFace((uint)readFile.ReadInt16(), (uint)readFile.ReadInt16(), (uint)readFile.ReadInt16());
+                                mesh.AddFace(
+                                    (uint)readFile.ReadInt16(),
+                                    (uint)readFile.ReadInt16(),
+                                    (uint)readFile.ReadInt16()
+                                );
                             }
                             else if (PropertySize[PropertyType] == 1)
                             {
-                                mesh.AddFace((uint)readFile.ReadByte(), (uint)readFile.ReadByte(), (uint)readFile.ReadByte());
+                                mesh.AddFace(
+                                    (uint)readFile.ReadByte(),
+                                    (uint)readFile.ReadByte(),
+                                    (uint)readFile.ReadByte()
+                                );
                             }
                         }
                         break;
@@ -1099,20 +1192,26 @@ namespace SELib
                             if (mesh.VertexCount <= i)
                             {
                                 var vert = new SEModelVertex();
-                                vert.UVSets.Add(new Vector2(readFile.ReadSingle(), readFile.ReadSingle()));
+                                vert.UVSets.Add(
+                                    new Vector2(readFile.ReadSingle(), readFile.ReadSingle())
+                                );
                                 mesh.AddVertex(vert);
                             }
                             else
                             {
-                                mesh.Verticies[i].UVSets.Add(new Vector2(readFile.ReadSingle(), readFile.ReadSingle()));
+                                mesh.Verticies[i].UVSets.Add(
+                                    new Vector2(readFile.ReadSingle(), readFile.ReadSingle())
+                                );
                             }
                         }
                         break;
                     case "mi":
-                        readFile.ReadByte();
+                        //not really needed
+                        var WeightInfluences = readFile.ReadByte();
                         break;
                     case "ul":
-                        readFile.ReadByte();
+                        //Always 1
+                        var UVLayers = readFile.ReadByte();
                         break;
                 }
             }
@@ -1157,7 +1256,7 @@ namespace SELib
                         material.Name = readFile.ReadNullTermString();
                         break;
                     case "t":
-                        readFile.ReadNullTermString();
+                        var type = readFile.ReadNullTermString();
                         break;
                 }
             }
@@ -1219,19 +1318,41 @@ namespace SELib
                             bone.BoneParent = readFile.ReadInt32();
                             break;
                         case "lr":
-                            bone.LocalRotation = new Quaternion(readFile.ReadSingle(), readFile.ReadSingle(), readFile.ReadSingle(), readFile.ReadSingle());
+                            bone.LocalRotation = new Quaternion(
+                                readFile.ReadSingle(),
+                                readFile.ReadSingle(),
+                                readFile.ReadSingle(),
+                                readFile.ReadSingle()
+                            );
                             break;
                         case "lp":
-                            bone.LocalPosition = new Vector3(readFile.ReadSingle(), readFile.ReadSingle(), readFile.ReadSingle());
+                            bone.LocalPosition = new Vector3(
+                                readFile.ReadSingle(),
+                                readFile.ReadSingle(),
+                                readFile.ReadSingle()
+                            );
                             break;
                         case "wr":
-                            bone.GlobalRotation = new Quaternion(readFile.ReadSingle(), readFile.ReadSingle(), readFile.ReadSingle(), readFile.ReadSingle());
+                            bone.GlobalRotation = new Quaternion(
+                                readFile.ReadSingle(),
+                                readFile.ReadSingle(),
+                                readFile.ReadSingle(),
+                                readFile.ReadSingle()
+                            );
                             break;
                         case "wp":
-                            bone.GlobalPosition = new Vector3(readFile.ReadSingle(), readFile.ReadSingle(), readFile.ReadSingle());
+                            bone.GlobalPosition = new Vector3(
+                                readFile.ReadSingle(),
+                                readFile.ReadSingle(),
+                                readFile.ReadSingle()
+                            );
                             break;
                         case "s":
-                            bone.Scale = new Vector3(readFile.ReadSingle(), readFile.ReadSingle(), readFile.ReadSingle());
+                            bone.Scale = new Vector3(
+                                readFile.ReadSingle(),
+                                readFile.ReadSingle(),
+                                readFile.ReadSingle()
+                            );
                             break;
                     }
                 }
@@ -1255,11 +1376,11 @@ namespace SELib
                 var childPropertiesCount = readFile.ReadInt32();
                 var childChildrenCount = readFile.ReadInt32();
 
-
                 switch (childNodeId)
                 {
                     case 0x6C656B73:
-                        ReadModelSkeleton(readFile, childChildrenCount, model); break;
+                        ReadModelSkeleton(readFile, childChildrenCount, model);
+                        break;
 
                     case 0x6873656D:
                         ReadModelMesh(readFile, childPropertiesCount, model);
@@ -1322,7 +1443,6 @@ namespace SELib
                 ReadCastRoot(readFile, model);
                 return model;
             }
-
         }
 
         /// <summary>
