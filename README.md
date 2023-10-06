@@ -1,6 +1,6 @@
 # CastModelViewer
 
-![Downloads](https://img.shields.io/github/downloads/echo000/CastModelViewer/total.svg) [![license](https://img.shields.io/github/license/echo000/CastModelViewer.svg)]()
+[![license](https://img.shields.io/github/license/echo000/CastModelViewer.svg)]()
 
 CastModelViewer is a fork of the original [SEModelViewer](https://github.com/Scobalula/SEModelViewer/) that adds Cast model loading
 
